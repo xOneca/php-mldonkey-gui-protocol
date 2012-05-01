@@ -1301,7 +1301,7 @@ class COpcode_FileInfo extends CMessage
         {
             $network_num = $this->raw_msg->read_raw_int32();
             $availability = $this->raw_msg->read_raw_string();
-            $availability = array_map( ord, str_split( $availability ) );
+            $availability = array_map( 'ord', str_split( $availability ) );
             $this->availability[$network_num] = $availability;
         }
 
