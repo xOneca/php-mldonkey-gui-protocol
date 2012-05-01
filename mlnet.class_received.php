@@ -1,4 +1,21 @@
 <?php
+/*
+ * Copyright (C) 2012 Xabier Oneca <xoneca+php-mldonkey-gui-protocol@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 /**
  * Protocol definition.
@@ -144,17 +161,17 @@ class COpcode_DefineSearches extends CMessage
  */
 class COpcode_ResultInfo extends CMessage
 {
-    var $result_id = 0;         /// Result ID.
-    var $network_id = 0;        /// Network ID.
-    var $file_names = array();  /// Array of file names.
-    var $file_ids = array();    /// Array of file IDs.
-    var $size = 0;              /// File size in bytes.
-    var $format = '';           /// File format.
-    var $type = '';             /// File type.
-    var $metadata = array();    /// Metadata.
-    var $comment = '';          /// File comment.
-    var $downloaded = false;    /// Whether the file was previously downloaded.
-    var $time = 0;              /// Timestamp.
+    var $result_id = 0;         ///< Result ID.
+    var $network_id = 0;        ///< Network ID.
+    var $file_names = array();  ///< Array of file names.
+    var $file_ids = array();    ///< Array of file IDs.
+    var $size = 0;              ///< File size in bytes.
+    var $format = '';           ///< File format.
+    var $type = '';             ///< File type.
+    var $metadata = array();    ///< Metadata.
+    var $comment = '';          ///< File comment.
+    var $downloaded = false;    ///< Whether the file was previously downloaded.
+    var $time = 0;              ///< Timestamp.
 
     function expand()
     {
@@ -308,22 +325,22 @@ class COpcode_ServerState extends CMessage
  */
 class COpcode_ClientInfo extends CMessage
 {
-    var $client_id = 0;             /// Client identifier
-    var $network_id = 0;            /// Client Network Identifier
-    var $client_kind = array();     /// Client Kind (direct or firewalled)
-    var $state = array( 0, 0 );     /// Client Connection State
-    var $client_type = 0;           /// Client Type (0 = Source, 1 = Friend, 2 = Contact)
-    var $client_metadata = array(); /// Client Metadata
-    var $client_name = '';          /// Client Name
-    var $client_rating = 0;         /// Client Rating (not used)
-    var $client_software = '';      /// Client Software
-    var $downloaded = 0;            /// Downloaded
-    var $uploaded = 0;              /// Uploaded
-    var $upload_filename = '';      /// Upload File Name
-    var $connect_time = 0;          /// Connect Time (Date Format?)
-    var $emule_mod = '';            /// Emule Mod
-    var $client_release = '';       /// Client Release (Version)
-    var $sui_verified = false;      /// Sui Verified
+    var $client_id = 0;             ///< Client identifier
+    var $network_id = 0;            ///< Client Network Identifier
+    var $client_kind = array();     ///< Client Kind (direct or firewalled)
+    var $state = array( 0, 0 );     ///< Client Connection State
+    var $client_type = 0;           ///< Client Type (0 = Source, 1 = Friend, 2 = Contact)
+    var $client_metadata = array(); ///< Client Metadata
+    var $client_name = '';          ///< Client Name
+    var $client_rating = 0;         ///< Client Rating (not used)
+    var $client_software = '';      ///< Client Software
+    var $downloaded = 0;            ///< Downloaded
+    var $uploaded = 0;              ///< Uploaded
+    var $upload_filename = '';      ///< Upload File Name
+    var $connect_time = 0;          ///< Connect Time (Date Format?)
+    var $emule_mod = '';            ///< Emule Mod
+    var $client_release = '';       ///< Client Release (Version)
+    var $sui_verified = false;      ///< Sui Verified
 
     function expand()
     {
@@ -496,7 +513,7 @@ class COpcode_ClientState extends CMessage
  */
 class COpcode_ConsoleMessage extends CMessage
 {
-    var $message = ''; /// Console message.
+    var $message = ''; ///< Console message.
 
     function expand()
     {
@@ -516,22 +533,35 @@ class COpcode_ConsoleMessage extends CMessage
  */
 class COpcode_NetworkInfo extends CMessage
 {
-    var $network_id = 0;    /// Network Identifier.
-    var $network_name = ''; /// Network name.
-    var $enabled = false;   /// Whether this network is enabled or not.
-    var $cfg_file = '';     /// Config file path for this network.
-    var $uploaded = 0;      /// Number of bytes uploaded on network.
-    var $downloaded = 0;    /// Number of bytes downloaded on network.
-    var $num_servers = 0;   /// Number of connected servers (only protocol 18 ?).
-    var $flags = array(     /// Network flags (protocol >17).
-        'NetworkHasServers' => false, // has well known servers.
-        'NetworkHasRooms'   => false, // has rooms to chat with other users.
-        'NetworkHasMultinet' => false, // files can be downloaded from several networks
-        'VirtualNetwork'    => false, // not a real network
-        'NetworkHasSearch'  => false, // searches can be issued
-        'NetworkHasChat'    => false, // chat between two users
-        'NetworkHasSupernodes' => false, // peers can become servers
-        'NetworkHasUpload'  => false  // upload is implemented
+    var $network_id = 0;    ///< Network Identifier.
+    var $network_name = ''; ///< Network name.
+    var $enabled = false;   ///< Whether this network is enabled or not.
+    var $cfg_file = '';     ///< Config file path for this network.
+    var $uploaded = 0;      ///< Number of bytes uploaded on network.
+    var $downloaded = 0;    ///< Number of bytes downloaded on network.
+    var $num_servers = 0;   ///< Number of connected servers (only protocol 18 ?).
+
+    /**
+     * Network flags (protocol >17).
+     *
+     * - \c 'NetworkHasServers'     => has well known servers.
+     * - \c 'NetworkHasRooms'       => has rooms to chat with other users.
+     * - \c 'NetworkHasMultinet'    => files can be downloaded from several networks
+     * - \c 'VirtualNetwork'        => not a real network
+     * - \c 'NetworkHasSearch'      => searches can be issued
+     * - \c 'NetworkHasChat'        => chat between two users
+     * - \c 'NetworkHasSupernodes'  => peers can become servers
+     * - \c 'NetworkHasUpload'      => upload is implemented
+     */
+    var $flags = array(
+        'NetworkHasServers'     => false,
+        'NetworkHasRooms'       => false,
+        'NetworkHasMultinet'    => false,
+        'VirtualNetwork'        => false,
+        'NetworkHasSearch'      => false,
+        'NetworkHasChat'        => false,
+        'NetworkHasSupernodes'  => false,
+        'NetworkHasUpload'      => false
     );
 
     function expand()
@@ -585,13 +615,13 @@ class COpcode_NetworkInfo extends CMessage
  */
 class COpcode_UserInfo extends CMessage
 {
-    var $user_id = 0;       /// User identifier.
-    var $md4 = '';          /// User MD4 (16-char string).
-    var $user_name = '';    /// User name.
-    var $address = null;    /// User address.
-    var $port = 0;          /// User port.
-    var $tags = array();    /// User tags.
-    var $server_id = 0;     /// Server identifier.
+    var $user_id = 0;       ///< User identifier.
+    var $md4 = '';          ///< User MD4 (16-char string).
+    var $user_name = '';    ///< User name.
+    var $address = null;    ///< User address.
+    var $port = 0;          ///< User port.
+    var $tags = array();    ///< User tags.
+    var $server_id = 0;     ///< Server identifier.
 
     function expand()
     {
@@ -627,10 +657,10 @@ class COpcode_UserInfo extends CMessage
  */
 class COpcode_RoomInfo extends CMessage
 {
-    var $room_id = 0;       /// Chat room identifier.
-    var $network_id = 0;    /// Network identifier.
-    var $name = '';         /// Room name.
-    var $status = 0;        /// Room status (0 = opened, 1 = closed, 2 = paused).
+    var $room_id = 0;       ///< Chat room identifier.
+    var $network_id = 0;    ///< Network identifier.
+    var $name = '';         ///< Room name.
+    var $status = 0;        ///< Room status (0 = opened, 1 = closed, 2 = paused).
 
     function expand()
     {
@@ -653,10 +683,10 @@ class COpcode_RoomInfo extends CMessage
  */
 class COpcode_RoomMessage extends CMessage
 {
-    var $room_id = 0;   /// Chat room identifier.
-    var $type = 0;      /// Message type (0 = server, 1 = public, 2 = private)
-    var $source = 0;    /// Who sent the message.
-    var $message = '';  /// The actual message.
+    var $room_id = 0;   ///< Chat room identifier.
+    var $type = 0;      ///< Message type (0 = server, 1 = public, 2 = private)
+    var $source = 0;    ///< Who sent the message.
+    var $message = '';  ///< The actual message.
 
     function expand()
     {
@@ -679,8 +709,8 @@ class COpcode_RoomMessage extends CMessage
  */
 class COpcode_RoomAddUser extends CMessage
 {
-    var $room_id = 0;   /// Chat room identifier.
-    var $user_id = 0;   /// User identifier.
+    var $room_id = 0;   ///< Chat room identifier.
+    var $user_id = 0;   ///< User identifier.
 
     function expand()
     {
@@ -701,24 +731,24 @@ class COpcode_RoomAddUser extends CMessage
  */
 class COpcode_ServerInfo extends CMessage
 {
-    var $server_id = 0;         /// Server ID.
-    var $network_id = 0;        /// Network ID.
-    var $address = array();     /// Array containing address information.
-    var $port = 0;              /// Server port.
-    var $score = 0;             /// Score.
-    var $metadata = array();    /// Metadata (array of name=>value).
-    var $number_users = 0;      /// Number of users connected.
-    var $number_files = 0;      /// Number of files indexed.
-    var $conn_status = array(); /// Connection status info (array: status, status_desc, rank).
-    var $name = '';             /// Name sent by the server.
-    var $description = '';      /// Description sent by the server.
-    var $preferred = false;     /// Is a preferred server?
-    var $server_version = '';   /// Version of the software in the server.
-    var $max_users = 0;         /// Max users that can connect to the server.
-    var $lowid_users = 0;       /// Number of low-ID users connected.
-    var $soft_limit = 0;        /// Soft limit
-    var $hard_limit = 0;        /// Hard limit.
-    var $ping = 0;              /// Ping time.
+    var $server_id = 0;         ///< Server ID.
+    var $network_id = 0;        ///< Network ID.
+    var $address = array();     ///< Array containing address information.
+    var $port = 0;              ///< Server port.
+    var $score = 0;             ///< Score.
+    var $metadata = array();    ///< Metadata (array of name=>value).
+    var $number_users = 0;      ///< Number of users connected.
+    var $number_files = 0;      ///< Number of files indexed.
+    var $conn_status = array(); ///< Connection status info (array: status, status_desc, rank).
+    var $name = '';             ///< Name sent by the server.
+    var $description = '';      ///< Description sent by the server.
+    var $preferred = false;     ///< Is a preferred server?
+    var $server_version = '';   ///< Version of the software in the server.
+    var $max_users = 0;         ///< Max users that can connect to the server.
+    var $lowid_users = 0;       ///< Number of low-ID users connected.
+    var $soft_limit = 0;        ///< Soft limit
+    var $hard_limit = 0;        ///< Hard limit.
+    var $ping = 0;              ///< Ping time.
 
     function expand()
     {
@@ -827,7 +857,7 @@ class COpcode_MessageFromClient extends CMessage
  */
 class COpcode_ConnectedServers extends CMessage
 {
-    var $servers = array(); /// Array of ServerInfo
+    var $servers = array(); ///< Array of ServerInfo
 
     function expand()
     {
@@ -936,9 +966,9 @@ class COpcode_ConnectedServers extends CMessage
  */
 class COpcode_SharedFileUpload extends CMessage
 {
-    var $file_id = 0;   /// File identifier.
-    var $upload = 0;    /// Upload.
-    var $requests = 0;  /// Requests.
+    var $file_id = 0;   ///< File identifier.
+    var $upload = 0;    ///< Upload.
+    var $requests = 0;  ///< Requests.
 
     function expand()
     {
@@ -980,14 +1010,14 @@ class COpcode_SharedFileUnshared extends CMessage
  */
 class COpcode_AddSectonOption extends CMessage
 {
-    var $section = '';          /// Section where the option should appear.
-    var $description = '';      /// Description of the option.
-    var $name = '';             /// Name of the option.
-    var $type = '';             /// Type of the value ("Bool", "Filename", ...).
-    var $help = '';             /// Help for the user.
-    var $current_value = '';    /// Current option value.
-    var $default_value = '';    /// Default option value.
-    var $advanced = false;      /// Advanced option.
+    var $section = '';          ///< Section where the option should appear.
+    var $description = '';      ///< Description of the option.
+    var $name = '';             ///< Name of the option.
+    var $type = '';             ///< Type of the value ("Bool", "Filename", ...).
+    var $help = '';             ///< Help for the user.
+    var $current_value = '';    ///< Current option value.
+    var $default_value = '';    ///< Default option value.
+    var $advanced = false;      ///< Advanced option.
 
     function expand()
     {
@@ -1026,10 +1056,10 @@ class COpcode_AddPluginOption extends COpcode_AddSectonOption
  */
 class COpcode_FileDownloadUpdate extends CMessage
 {
-    var $file_id = 0;           /// File identifier.
-    var $download_size = 0;     /// Downloaded bytes.
-    var $download_rate = 0.0;   /// Download rate.
-    var $last_seen = 0;         /// Seconds since last seen.
+    var $file_id = 0;           ///< File identifier.
+    var $download_size = 0;     ///< Downloaded bytes.
+    var $download_rate = 0.0;   ///< Download rate.
+    var $last_seen = 0;         ///< Seconds since last seen.
 
     function expand()
     {
@@ -1068,12 +1098,12 @@ class COpcode_BadPassword extends CMessage
  */
 class COpcode_SharedFileInfo extends CMessage
 {
-    var $file_id = 0;       /// File identifier (not compatible with id from COpcode_FileInfo).
-    var $network_id = 0;    /// Network identifier.
-    var $file_name = '';    /// Shared file name.
-    var $file_size = 0;     /// File size.
-    var $uploaded = 0;      /// Number of bytes uploaded.
-    var $requests = 0;      /// Number of requests for this file.
+    var $file_id = 0;       ///< File identifier (not compatible with id from COpcode_FileInfo).
+    var $network_id = 0;    ///< Network identifier.
+    var $file_name = '';    ///< Shared file name.
+    var $file_size = 0;     ///< File size.
+    var $uploaded = 0;      ///< Number of bytes uploaded.
+    var $requests = 0;      ///< Number of requests for this file.
 
     function expand()
     {
@@ -1101,17 +1131,17 @@ class COpcode_SharedFileInfo extends CMessage
  */
 class COpcode_ClientStats extends CMessage
 {
-    var $total_uploaded = 0;            /// Total uploaded bytes.
-    var $total_downloaded = 0;          /// Total downloaded bytes.
-    var $total_shared = 0;              /// Total bytes shared.
-    var $shared_files = 0;              /// Number of shared files.
-    var $tcp_up_rate = 0;               /// TCP upload rate.
-    var $tcp_down_rate = 0;             /// TCP download rate.
-    var $udp_up_rate = 0;               /// UDP upload rate.
-    var $udp_down_rate = 0;             /// UDP download rate.
-    var $num_current_downloads = 0;     /// Number of current downloads.
-    var $num_downloads_finished = 0;    /// Number of downloads finished.
-    var $connected_servers = array();   /// Network identifiers and the corresponding number of servers connected to.
+    var $total_uploaded = 0;            ///< Total uploaded bytes.
+    var $total_downloaded = 0;          ///< Total downloaded bytes.
+    var $total_shared = 0;              ///< Total bytes shared.
+    var $shared_files = 0;              ///< Number of shared files.
+    var $tcp_up_rate = 0;               ///< TCP upload rate.
+    var $tcp_down_rate = 0;             ///< TCP download rate.
+    var $udp_up_rate = 0;               ///< UDP upload rate.
+    var $udp_down_rate = 0;             ///< UDP download rate.
+    var $num_current_downloads = 0;     ///< Number of current downloads.
+    var $num_downloads_finished = 0;    ///< Number of downloads finished.
+    var $connected_servers = array();   ///< Network identifiers and the corresponding number of servers connected to.
 
     function expand()
     {
@@ -1150,8 +1180,8 @@ class COpcode_ClientStats extends CMessage
  */
 class COpcode_FileRemoveSource extends CMessage
 {
-    var $file_id = 0;   /// File identifier.
-    var $client_id = 0; /// Client identifier.
+    var $file_id = 0;   ///< File identifier.
+    var $client_id = 0; ///< Client identifier.
 
     function expand()
     {
@@ -1172,8 +1202,8 @@ class COpcode_FileRemoveSource extends CMessage
  */
 class COpcode_CleanTables extends CMessage
 {
-    var $useful_clients = array();  /// Client identifiers that are still useful.
-    var $useful_servers = array();  /// Server identifiers that are still useful.
+    var $useful_clients = array();  ///< Client identifiers that are still useful.
+    var $useful_servers = array();  ///< Server identifiers that are still useful.
 
     function expand()
     {
@@ -1199,38 +1229,38 @@ class COpcode_CleanTables extends CMessage
 /**
  * File information of download list (for one file).
  *
- * Opcode 7 (0x07) for old protocol versions.
- * Opcode 40 (0x28) for old protocol versions.
- * Opcode 43 (0x2b) for old protocol versions.
+ * Opcode 7 (0x07) for old protocol versions.\n
+ * Opcode 40 (0x28) for old protocol versions.\n
+ * Opcode 43 (0x2b) for old protocol versions.\n
  * Opcode 52 (0x34)
  */
 class COpcode_FileInfo extends CMessage
 {
-    var $file_id = 0;               /// File identifier.
-    var $network_id = 0;            /// Network identifier.
-    var $filenames = array();       /// Possible file names.
-    var $md4 = '';                  /// File MD4 hash.
-    var $file_size = 0;             /// Size in bytes.
-    var $downloaded = 0;            /// Downloaded bytes.
-    var $sources = 0;               /// Number of sources.
-    var $clients = 0;               /// Number of clients.
-    var $status = array();          /// The status of the download.
-    var $chunks = '';               /// One char by chunk: 0 = missing, 1 = partial, 2 = complete, 3 = verified.
-    var $availability = array();    /// Availability of chunks by network.
-    var $download_rate = 0.0;       /// Current download speed.
-    var $chunk_ages = array();      /// Chunk ages in seconds.
-    var $file_age = 0;              /// Seconds since download started.
-    var $file_format = array();     /// File format.
-    var $name = '';                 /// Preferred file name.
-    var $last_seen_complete = 0;    /// Last seen complete (seconds).
-    var $priority = 0;              /// File priority (e.g. very low: -20, normal: 0, high: 10)
-    var $comment = '';              /// File comment
-    var $links = array();           /// Network specific links to the file.
-    var $subfiles = array();        /// List of name, size and format of the subfiles.
-    var $file_format_im = '';       /// File format given by ImageMagic library.
-    var $comments = array();        /// List of IP, GeoIP, name, rating and comment.
-    var $user = '';                 /// Owner user of the file.
-    var $group = '';                /// Owner group of the file.
+    var $file_id = 0;               ///< File identifier.
+    var $network_id = 0;            ///< Network identifier.
+    var $filenames = array();       ///< Possible file names.
+    var $md4 = '';                  ///< File MD4 hash.
+    var $file_size = 0;             ///< Size in bytes.
+    var $downloaded = 0;            ///< Downloaded bytes.
+    var $sources = 0;               ///< Number of sources.
+    var $clients = 0;               ///< Number of clients.
+    var $status = array();          ///< The status of the download.
+    var $chunks = '';               ///< One char by chunk: 0 = missing, 1 = partial, 2 = complete, 3 = verified.
+    var $availability = array();    ///< Availability of chunks by network.
+    var $download_rate = 0.0;       ///< Current download speed.
+    var $chunk_ages = array();      ///< Chunk ages in seconds.
+    var $file_age = 0;              ///< Seconds since download started.
+    var $file_format = array();     ///< File format.
+    var $name = '';                 ///< Preferred file name.
+    var $last_seen_complete = 0;    ///< Last seen complete (seconds).
+    var $priority = 0;              ///< File priority (e.g. very low: -20, normal: 0, high: 10)
+    var $comment = '';              ///< File comment
+    var $links = array();           ///< Network specific links to the file.
+    var $subfiles = array();        ///< List of name, size and format of the subfiles.
+    var $file_format_im = '';       ///< File format given by ImageMagic library.
+    var $comments = array();        ///< List of IP, GeoIP, name, rating and comment.
+    var $user = '';                 ///< Owner user of the file.
+    var $group = '';                ///< Owner group of the file.
 
     function expand()
     {
@@ -1531,9 +1561,9 @@ class COpcode_FileInfo extends CMessage
 /**
  * All the files being downloading.
  *
- * Opcode 29 (0x1d) for old protocol verions.
- * Opcode 41 (0x29) for old protocol verions.
- * Opcode 44 (0x2c) for old protocol verions.
+ * Opcode 29 (0x1d) for old protocol verions.\n
+ * Opcode 41 (0x29) for old protocol verions.\n
+ * Opcode 44 (0x2c) for old protocol verions.\n
  * Opcode 53 (0x35)
  */
 class COpcode_DownloadingFiles extends COpcode_FileInfo
@@ -1619,6 +1649,8 @@ class COpcode_DownloadingFiles extends COpcode_FileInfo
  * Opcode 42 (0x2a) for old protocol verions.
  * Opcode 45 (0x2d) for old protocol verions.
  * Opcode 54 (0x36)
+ *
+ * @note Implementation is same as COpcode_DownloadingFiles
  */
 class COpcode_DownloadedFiles extends COpcode_DownloadingFiles
 {
@@ -1632,7 +1664,7 @@ class COpcode_DownloadedFiles extends COpcode_DownloadingFiles
  */
 class COpcode_Uploaders extends CMessage
 {
-    var $files = array();   /// All the files being uploaded.
+    var $files = array();   ///< All the files being uploaded.
 
     function expand()
     {
@@ -1653,7 +1685,7 @@ class COpcode_Uploaders extends CMessage
  */
 class COpcode_Pending extends CMessage
 {
-    var $files = array();   /// Pending File Identifiers.
+    var $files = array();   ///< Pending File Identifiers.
 
     function expand()
     {
@@ -1689,7 +1721,7 @@ class COpcode_Search extends CMessage
  */
 class COpcode_Version extends CMessage
 {
-    var $version = ''; /// Core version as a string.
+    var $version = ''; ///< Core version as a string.
 
     function expand()
     {
@@ -1711,8 +1743,8 @@ class COpcode_Version extends CMessage
  */
 class COpcode_Stats extends CMessage
 {
-    var $id = 0;            /// ID?
-    var $stats = array();   /// Stats
+    var $id = 0;            ///< ID?
+    var $stats = array();   ///< Stats
 
     function expand()
     {

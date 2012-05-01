@@ -1,5 +1,24 @@
 <?php
+/*
+ * Copyright (C) 2012 Xabier Oneca <xoneca+php-mldonkey-gui-protocol@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 /**
+ * @file
  * Messages sent to the server.
  */
 
@@ -552,8 +571,8 @@ class COpcode_SetOption extends CMessage
 {
     var $opcode = 28;
 
-    var $name = '';  /// Option name
-    var $value = ''; /// Option value
+    var $name = '';  ///< Option name
+    var $value = ''; ///< Option value
 
     function __construct( &$socket, $name, $value )
     {
@@ -577,7 +596,7 @@ class COpcode_SetOption extends CMessage
  *
  * Opcode 29 (0x1d)
  */
-class COpcode_Xxxx extends CMessage
+class COpcode_ConsoleCommand extends CMessage
 {
     var $opcode = 29;
 
@@ -876,8 +895,8 @@ class COpcode_SearchQuery extends CMessage
     var $search_id = 0;
     var $query = null;
     var $max_results = 0;
-    var $search_type = 0;   /// 0 = local; 1 = remote; 2 = subscription
-    var $network = 0;       /// 0 == All
+    var $search_type = 0;   ///< 0 = local; 1 = remote; 2 = subscription
+    var $network = 0;       ///< 0 == All
 
     function __construct( &$socket, $search_id, $query, $max_results, $search_type, $network )
     {
@@ -922,7 +941,7 @@ class COpcode_SearchQuery extends CMessage
                 $this->_build_query( $query['queries'][1] );
                 break;
 
-            case 3: // Module (fields to be displayed ina frame
+            case 3: // Module (fields to be displayed in a frame)
                 $this->raw_msg->write_raw_string( $query['module'] );
                 $this->_build_query( $query['query'] );
                 break;
@@ -1075,9 +1094,9 @@ class COpcode_Download extends CMessage
 {
     var $opcode = 50;
 
-    var $names = array();   /// All known names for the file
-    var $file_id = 0;       /// Identifier of the result to download
-    var $force = false;     /// 0 = try; 1 = force download
+    var $names = array();   ///< All known names for the file
+    var $file_id = 0;       ///< Identifier of the result to download
+    var $force = false;     ///< 0 = try; 1 = force download
 
     function __construct( &$socket, $names, $file_id, $force )
     {
@@ -1243,13 +1262,15 @@ class COpcode_MessageVersions extends CMessage
 {
     var $opcode = 55;
 
-    var $messages = array(); /// Each element: array(
-                             ///   'opcode' => message opcode,
-                             ///   'fromgui' => if the message originates at the
-                             ///                GUI (true) or at the server
-                             ///                (false),
-                             ///   'version' => protocol version to use
-                             /// )
+    /**
+     * Each element is an array itself with following keys:
+     *
+     * - \c 'opcode'  => message opcode,
+     * - \c 'fromgui' => if the message originates at the GUI (true) or at
+     *                   the server (false),
+     * - \c 'version' => protocol version to use
+     */
+    var $messages = array();
 
     function __construct( &$socket, $messages )
     {
@@ -1486,7 +1507,7 @@ class COpcode_GetStats extends CMessage
 {
     var $opcode = 68;
 
-    var $identifier = 0; /// ???
+    var $identifier = 0; ///< ???
 
     function __construct( &$socket, $identifier )
     {

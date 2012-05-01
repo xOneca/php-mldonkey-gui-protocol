@@ -1,4 +1,21 @@
 <?php
+/*
+ * Copyright (C) 2012 Xabier Oneca <xoneca+php-mldonkey-gui-protocol@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 
 require( 'mlnet.opcodes.php' );
 
@@ -8,15 +25,15 @@ define( 'OPCODE_LEN', 2 ); // Bytes for opcode number
 /**
  * Generic class for all GUIprotocol messages.
  *
- * Size of Content (Header): int32
- * Opcode:                   int16
- * Payload:                  variable-size
+ * - Size of Content (Header): int32
+ * - Opcode:                   int16
+ * - Payload:                  variable-size
  */
 class CMessage
 {
-    var $opcode = 0;
-    var $socket = null;
-    var $raw_msg = null; // CRaw_Data object
+    var $opcode = 0;     ///< Message opcode
+    var $socket = null;  ///< Connection socket
+    var $raw_msg = null; ///< CRaw_Data object
 
     function __construct( &$socket )
     {
@@ -48,6 +65,8 @@ class CMessage
 
     /**
      * Send the message to the server.
+     *
+     * @return \c true on success.
      */
     function send( )
     {
@@ -68,16 +87,40 @@ class CMessage
         return true;
     }
 
+    /**
+     * Parses raw data into class properties.
+     *
+     * It must be overriden in each subclass and implement needed code for
+     * parsing the message.
+     *
+     * @return \c true on success.
+     */
     function expand( )
     {
         return false;
     }
 
+    /**
+     * Parses local properties and prepares raw data to send.
+     *
+     * It must be overriden in each subclass and implement needed code for
+     * preparing object data to be ready to send.
+     *
+     * @return \c true on success
+     */
     function build( )
     {
         return false;
     }
 
+    /**
+     * Converts this generic class into the appropiate subclass.
+     *
+     * Reads the message opcode and returns the corresponding subclass with
+     * the same message ready to be expand()-ed.
+     *
+     * @return a \c CMessage subclass.
+     */
     function &convert( )
     {
         if( $this->raw_msg === null && !$this->read() )
@@ -110,8 +153,8 @@ class CMessage
  */
 class CRaw_Data
 {
-    var $data = '';
-    var $pointer = 0;
+    var $data = '';     ///< Raw data from/to socket
+    var $pointer = 0;   ///< Current position when reading from raw data.
 
     function __construct( $data = '' )
     {
@@ -119,7 +162,7 @@ class CRaw_Data
         $this->pointer = 0;
     }
 
-    // Important running PHP on a 64-bit system
+    /// @note Important running PHP on a 64-bit system
     function read_raw_int64( )
     {
         // unpack() can not read an int64 (yet), so we read
@@ -130,7 +173,7 @@ class CRaw_Data
         return $read[1] | ($read[2] << 32);
     }
 
-    // Important running PHP on a 64-bit system
+    /// @note Important running PHP on a 64-bit system
     function write_raw_int64( $value )
     {
         $this->data .= pack(
@@ -213,10 +256,12 @@ class CRaw_Data
     }
 
     /**
-     * Read a float number from the stream.
+     * Read a float number from the buffer.
      *
      * The number is a string in the stream with the integer part before the
      * dot and the hundredths after the dot. So "7.3" represents 7.03.
+     *
+     * @return the "decoded" float value.
      */
     function read_raw_float( )
     {
@@ -226,6 +271,13 @@ class CRaw_Data
         return intval( $integer ) + intval( $hundredths ) / 100;
     }
 
+    /**
+     * Encode a float value and append it to the buffer.
+     *
+     * @see read_raw_float()
+     *
+     * @param $value Float value you want to send.
+     */
     function write_raw_float( $value )
     {
         $int_part = intval( $value );
@@ -271,7 +323,9 @@ class CRaw_Data
     }
 
     /**
-     * Read a 16-char hash.
+     * Read a binary 16-byte hash.
+     *
+     * @return the binary hash as-is.
      */
     function read_raw_hash( )
     {
@@ -281,11 +335,26 @@ class CRaw_Data
         return $hash;
     }
 
+    /**
+     * Write a 16-byte hash.
+     *
+     * @param $hash the binary hash.
+     */
     function write_raw_hash( $hash )
     {
         $this->data .= sprintf( '%16.16s', $hash );
     }
 
+    /**
+     * Read a pair of (\c name, \c value) from buffer.
+     *
+     * \c value can be a number, string or an array.
+     *
+     * @return an array with the \c name as a key and the \c value as its value.
+     *
+     * @note the returned array should be merged if there are more tags
+     *       decoded to an array.
+     */
     function read_raw_tag( )
     {
         $name = $this->read_raw_string( );
