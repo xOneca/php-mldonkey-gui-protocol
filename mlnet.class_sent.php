@@ -179,6 +179,8 @@ class COpcode_SaveOptions extends CMessage
 
     function build()
     {
+        $this->raw_msg->write_raw_int16(count($this->options));
+
         foreach( $this->options as $option_name => $option_value )
         {
             $this->raw_msg->write_raw_string( $option_name );
