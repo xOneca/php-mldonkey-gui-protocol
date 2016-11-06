@@ -1236,17 +1236,7 @@ class COpcode_AddServer extends CMessage
     function build()
     {
         $this->raw_msg->write_raw_int32( $this->network_id );
-
-        $ip_chunks = explode( '.', $this->ip_address );
-        $ip = 0;
-
-        if( count($ip_chunks) != 4 )
-            return false;
-
-        for( $i = 4; $i > 0; $i-- )
-            $ip += intval( $ip_chunks[$i] ) << (4 - $i);
-
-        $this->raw_msg->write_raw_int32( $ip );
+        $this->raw_msg->write_raw_int32( ip2long($this->ip_address) );
         $this->raw_msg->write_raw_int16( $this->port );
 
         return true;
